@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Hoop Masters</title>
+</head>
+<body>
+    <h1>Welcome to AI Hoop Masters</h1>
+
+    <!-- Video Upload Form -->
+    <h2>Upload Your Shooting Video</h2>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <label for="video">Upload a video (mp4, mov, avi):</label><br>
+        <input type="file" name="video" accept="video/*" required><br><br>
+        <button type="submit">Upload Video</button>
+    </form>
+
+    <!-- Generate Image Form -->
+    <h2>Generate Basketball Visuals</h2>
+    <form action="/generate_image" method="POST">
+        <label for="prompt">Describe the image you want:</label><br>
+        <input type="text" name="prompt" placeholder="A basketball player shooting with proper form" required><br><br>
+        <button type="submit">Generate Image</button>
+    </form>
+
+    <!-- Generate Audio Form -->
+    <h2>Generate Audio Feedback</h2>
+    <form action="/generate_audio" method="POST">
+        <label for="feedback">Enter text feedback for audio:</label><br>
+        <input type="text" name="feedback" placeholder="Great job! Keep practicing your follow-through." required><br><br>
+        <button type="submit">Generate Audio</button>
+    </form>
+</body>
+</html>

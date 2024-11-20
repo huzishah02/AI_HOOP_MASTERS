@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Hoop Masters</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #results {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to AI Hoop Masters</h1>
+
+    <!-- Video Upload Form -->
+    <h2>Upload Your Shooting Video</h2>
+    <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
+        <label for="video">Upload a video (mp4, mov, avi):</label><br>
+        <input type="file" name="video" accept="video/mp4,video/mov,video/avi" required><br><br>
+        <button type="submit">Upload Video</button>
+    </form>
+    
+    <!-- Display Video Feedback and Results -->
+    <div id="results">
+        <h3>Feedback</h3>
+        <p id="feedback-text">Upload a video to get feedback!</p>
+        <h3>Generated Audio</h3>
+        <audio id="feedback-audio" controls hidden></audio>
+        <h3>Generated Image</h3>
+        <img id="generated-image" alt="Generated Basketball Visual" style="max-width: 100%; display: none;" />
+    </div>
+
+    <div id="loading" style="display: none; margin-top: 20px; color: #555;">
+        Processing your video, please wait...
+    </div>
+
+    <script>
+        const uploadForm = document.getElementById('uploadForm');
+        const feedbackText = document.getElementById("feedback-text");
+        const feedbackAudio = document.getElementById("feedback-audio");
+        const generatedImage = document.getElementById("generated-image");
+        const loadingIndicator = document.getElementById("loading");
+
+        uploadForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            loadingIndicator.style.display = "block"; // Show loading indicator
+            const formData = new FormData(uploadForm);
+
+            try {
+                const response = await fetch("/upload", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await response.json();
+                loadingIndicator.style.display = "none"; // Hide loading indicator
+
+                if (response.ok) {
+                    feedbackText.textContent = result.feedback.join(" ");
+                    feedbackAudio.src = result.audio_feedback;
+                    feedbackAudio.hidden = false;
+                    generatedImage.src = result.generated_image; // Update image source
+                    generatedImage.style.display = "block"; // Show image
+                } else {
+                    feedbackText.textContent = result.error || "An error occurred.";
+                    feedbackAudio.hidden = true;
+                    generatedImage.style.display = "none"; // Hide image
+                }
+            } catch (error) {
+                loadingIndicator.style.display = "none"; // Hide loading indicator
+                feedbackText.textContent = "An unexpected error occurred.";
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
